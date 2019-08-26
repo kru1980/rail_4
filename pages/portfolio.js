@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import BasePage from "../components/layouts/BasePage";
 
 const Portfolio = ({ postId }) => {
   return (

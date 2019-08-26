@@ -3,6 +3,7 @@ import { Link } from "../routes";
 import fetch from "isomorphic-unfetch";
 
 import BaseLayout from "../components/layouts/BaseLayout";
+import BasePage from "../components/layouts/BasePage";
 
 const Portfolios = ({ shows }) => {
   const list = shows =>
@@ -16,9 +17,11 @@ const Portfolios = ({ shows }) => {
 
   return (
     <BaseLayout>
-      <h3>Page Batman </h3>
-      <h4>List shows:</h4>
-      <ul>{shows ? list(shows) : <p>Список шоу пуст</p>}</ul>
+      <BasePage>
+        <h3>Page Batman </h3>
+        <h4>List shows:</h4>
+        <ul>{shows ? list(shows) : <p>Список шоу пуст</p>}</ul>
+      </BasePage>
     </BaseLayout>
   );
 };

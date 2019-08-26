@@ -1,13 +1,16 @@
 import React from "react";
 import Header from "../shared/Header";
 
-import "../../style/main.scss";
+const BaseLayout = props => {
+  // console.log("props", props);
 
-const BaseLayout = ({ children }) => {
+  const { children, className } = props;
   return (
-    <div className="example">
+    <div className="layout-container">
       <Header />
-      <div>{children}</div>
+      <main className={`cover ${className}`}>
+        <div className="wrapper">{children}</div>
+      </main>
     </div>
   );
 };
