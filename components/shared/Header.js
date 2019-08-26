@@ -23,6 +23,13 @@ const BsNavLink = ({ title, route }) => {
   );
 };
 
+const Login = () => {
+  return <span className="nav-link port-navbar-link clickable">Login</span>;
+};
+const Logout = () => {
+  return <span className="nav-link port-navbar-link clickable">Logout</span>;
+};
+
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -56,7 +63,7 @@ export default class Header extends React.Component {
                 <BsNavLink title="Home" route="/" />
               </NavItem>
               <NavItem className="port-navbar-item">
-                <BsNavLink title="About rail" route="/about" />
+                <BsNavLink title="About" route="/about" />
               </NavItem>
               <NavItem className="port-navbar-item">
                 <BsNavLink title="Portfolios" route="/portfolios" />
@@ -66,6 +73,12 @@ export default class Header extends React.Component {
               </NavItem>
               <NavItem className="port-navbar-item">
                 <BsNavLink title="Cv" route="/cv" />
+              </NavItem>
+              <NavItem className="port-navbar-item">
+                <Login />
+              </NavItem>
+              <NavItem className="port-navbar-item">
+                <Logout />
               </NavItem>
 
               {/* <UncontrolledDropdown nav inNavbar>
