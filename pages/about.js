@@ -18,7 +18,6 @@ const About = () => {
 
 About.getInitialProps = async ({ query }) => {
   const id = query.id;
-  console.log("about id", id);
 
   return {};
 };

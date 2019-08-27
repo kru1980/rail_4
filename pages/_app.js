@@ -17,18 +17,16 @@ class MyApp extends App {
   //   }
 
   static async getInitialProps(appContext) {
-    // console.log("appContext", appContext);
     // calls page's `getInitialProps` and fills `appProps.pageProps`
     const appProps = await App.getInitialProps(appContext);
-
-    return { ...appProps };
+    const isAuth = false;
+    return { ...appProps, isAuth };
   }
 
   render() {
-    const { Component, pageProps, logic } = this.props;
-    // console.log("logic const _app", logic);
+    const { Component, pageProps, isAuth } = this.props;
 
-    return <Component {...pageProps} />;
+    return <Component {...pageProps} isAuth={isAuth} />;
   }
 }
 

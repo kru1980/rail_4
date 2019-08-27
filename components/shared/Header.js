@@ -23,9 +23,12 @@ const BsNavLink = ({ title, route }) => {
   );
 };
 
-const Login = () => {
-  return <span className="nav-link port-navbar-link clickable">Login</span>;
-};
+// Login в моей идеи это ссылка на страницу, на которой расположена форма регистрации
+// const Login = () => {
+//   return <span className="nav-link port-navbar-link clickable">Login</span>;
+// };
+
+// Logout спан элемент при клике на который идет событие онклик, метод приходит через контекст или через пропсы из _app компонента
 const Logout = () => {
   return <span className="nav-link port-navbar-link clickable">Logout</span>;
 };
@@ -36,7 +39,8 @@ export default class Header extends React.Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      isAuth: this.props.isAuth // данные получим через контекст из _app, там посадим слушателя
     };
   }
   toggle() {
@@ -68,18 +72,23 @@ export default class Header extends React.Component {
               <NavItem className="port-navbar-item">
                 <BsNavLink title="Portfolios" route="/portfolios" />
               </NavItem>
-              <NavItem className="port-navbar-item">
+              {/* <NavItem className="port-navbar-item">
                 <BsNavLink title="Blog" route="/blog" />
               </NavItem>
               <NavItem className="port-navbar-item">
                 <BsNavLink title="Cv" route="/cv" />
-              </NavItem>
-              <NavItem className="port-navbar-item">
-                <Login />
-              </NavItem>
-              <NavItem className="port-navbar-item">
-                <Logout />
-              </NavItem>
+              </NavItem> */}
+              {!this.state.isAuth && (
+                <NavItem className="port-navbar-item">
+                  <BsNavLink title="Login" route="/login" />
+                </NavItem>
+              )}
+
+              {this.state.isAuth && (
+                <NavItem className="port-navbar-item">
+                  <Logout />
+                </NavItem>
+              )}
 
               {/* <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>

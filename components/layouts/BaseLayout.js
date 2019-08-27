@@ -2,12 +2,10 @@ import React from "react";
 import Header from "../shared/Header";
 
 const BaseLayout = props => {
-  // console.log("props", props);
-
-  const { children, className } = props;
+  const { children, className, isAuth } = props;
   return (
     <div className="layout-container">
-      <Header />
+      <Header isAuth={isAuth} />
       <main className={`cover ${className}`}>
         <div className="wrapper">{children}</div>
       </main>
