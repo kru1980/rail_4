@@ -153,5 +153,9 @@ body {
 .clickable {
   cursor: pointer; }
 
+.error {
+  color: red;
+  font-weight: bold; }
+
 
 /*# sourceMappingURL=styles.chunk.css.map*/
