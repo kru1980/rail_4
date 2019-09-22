@@ -9,7 +9,7 @@ const About = () => {
       <BasePage className="about-page">
         <div>
           <p>about page</p>
-          <Button color="danger">Danger!</Button>
+          <Button color="danger"></Button>
         </div>
       </BasePage>
     </BaseLayout>
