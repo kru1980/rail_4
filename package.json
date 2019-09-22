@@ -8,6 +8,9 @@
     "build": "next build",
     "start": "NODE_ENV=production node server/server.js"
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -26,5 +29,11 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "reactstrap": "^8.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.4.0",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.14.3"
   }
 }
