@@ -1,7 +1,7 @@
 import React from "react";
 import BaseLayout from "../components/layouts/BaseLayout";
 import BasePage from "../components/layouts/BasePage";
-import LoginCreateForm from "../components/registration/loginCreateForm";
+import LoginCreateForm from "../components/registration/LoginCreateForm";
 import { Container, Row, Col } from "reactstrap";
 
 const Login = () => {

@@ -80,6 +80,11 @@ export default class Header extends React.Component {
               </NavItem> */}
               {!this.state.isAuth && (
                 <NavItem className="port-navbar-item">
+                  <BsNavLink title="Registration" route="/registration" />
+                </NavItem>
+              )}
+              {!this.state.isAuth && (
+                <NavItem className="port-navbar-item">
                   <BsNavLink title="Login" route="/login" />
                 </NavItem>
               )}
@@ -87,6 +92,7 @@ export default class Header extends React.Component {
               {this.state.isAuth && (
                 <NavItem className="port-navbar-item">
                   <Logout />
+                  {/* logout это ссылка, а не компанент */}
                 </NavItem>
               )}
 
