@@ -24,10 +24,10 @@ const Registration = ({ messagesFromServer }) => {
 };
 
 Registration.getInitialProps = async ({ req }) => {
-  let messagesFromServer = await req.status;
-  if (messagesFromServer != 200) {
-    console.log("ответ сервера", messagesFromServer);
-  }
+  // let messagesFromServer = await req.status;
+  // if (messagesFromServer != 200) {
+  //   console.log("ответ сервера", messagesFromServer);
+  // }
 
   return {};
 };

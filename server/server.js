@@ -1,12 +1,18 @@
 const express = require("express");
 const next = require("next");
-const routes = require("../routes");
-const passport = require("passport");
+
+const routes = require("../routes"); // next routes
+
 const bodyParser = require("body-parser");
 
+const passport = require("passport");
+
 const session = require("express-session");
-const FileStore = require("session-file-store")(session);
 const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo")(session);
+
+const db = require("./config/db");
+const config = require("./config/config");
 
 // passport config
 require("./services/passport")(passport);
@@ -18,8 +24,7 @@ const app = next({ dev });
 const handle = routes.getRequestHandler(app);
 
 mongoose
-  .connect("mongodb://localhost/next-dev", {
-    // useMongoClient: true,
+  .connect(db.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -30,27 +35,53 @@ mongoose
 
 mongoose.Promise = global.Promise;
 
+// server next
 app.prepare().then(() => {
   const server = express();
-  server.use(bodyParser.urlencoded({ extended: false }));
+  server.use(bodyParser.urlencoded({ extended: false })); // тк через  axios то false
   server.use(bodyParser.json());
+
+  // session
   server.use(
     session({
-      secret: "keyboard cat",
+      secret: config.SESSION_SECRET,
       resave: true,
-      saveUninitialized: true
+      saveUninitialized: false,
+      store: new MongoStore({
+        mongooseConnection: mongoose.connection
+      }),
+      expires: new Date(Date.now() + 60 * 60 * 24 * 30)
     })
   );
 
   server.use(passport.initialize());
   server.use(passport.session());
-  server.use("/users", require("./routs/users")); // подкл роут юзера
+
+  server.use("/users", require("./routes").auth); // подкл роут юзера
 
   server.get("/v1/secret", (req, res) => {
     return res.send("ok secret rout");
   });
+
   server.get("*", (req, res) => {
     return handle(req, res);
+  });
+
+  // catch 404 and forward to error handler
+  server.use((req, res, next) => {
+    const err = new Error("Not Found");
+    err.status = 404;
+    next(err);
+  });
+
+  // error handler
+  // eslint-disable-next-line no-unused-vars
+  server.use((error, req, res, next) => {
+    res.status(error.status || 500);
+    res.render("error", {
+      message: error.message,
+      error: !config.IS_PRODUCTION ? error : {}
+    });
   });
 
   server.use(handle).listen(port, err => {

@@ -1,4 +1,3 @@
-// Render Prop
 import React from "react";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -12,8 +11,8 @@ import FormInput from "./FormInput";
 const INITIAL_VALUES = { name: "", email: "", password: "", password2: "" };
 
 const validateInputs = values => {
-  //debugger;
   let errors = {};
+  // console.log(values);
 
   Object.keys(values).forEach(key => {
     if (!values[key]) {
@@ -21,11 +20,9 @@ const validateInputs = values => {
     }
   });
 
-  if (password != password2) {
-    errors.text = "Пароли не совпадают";
-  }
-
-  console.log("validation registration form", errors);
+  // if (password != password2) {
+  //   errors.text = "Пароли не совпадают";
+  // }
 
   return errors;
 };
@@ -36,17 +33,39 @@ const saveCredentialData = credentialsValues => {
   }, 400);
 };
 
-const reqCredentialData = credentialsValues => {
-  axios
-    .post("/users/register", credentialsValues)
-    // .post("/users/register", JSON.stringify(credentialsValues))
-    .then(function(response) {
-      console.log(response);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-};
+// const reqCredentialData = credentialsValues => {
+//   axios
+//     .post("/users/registration", credentialsValues)
+//     // .post("/users/register", JSON.stringify(credentialsValues))
+//     .then(function(response) {
+//       console.log("response from server =", response);
+//       // На сервере делаем проверку есть юзер в базе или нет, создаем его
+//     })
+//     .catch(function(error) {
+//       console.log("error from server =", error);
+//       // ошибки с сервера
+//     });
+// };
+
+// const handle400Error = (backendErrors, setStatus) => {
+//   let errors = {};
+//   for (let key in backendErrors) {
+//     errors[key] = backendErrors[key][0]; // for now only take the first error of the array
+//   }
+//   console.log("errors object", errors);
+//   setStatus({ errors });
+// };
+
+// const handleSubmit = async (values, { setStatus, resetForm }) => {
+//   try {
+//     const res = axios.post("/users/registration", values);
+
+//     console.log(res.data);
+//     resetForm();
+//   } catch (e) {
+//     setStatus(transformMyApiErrors(e));
+//   }
+// };
 
 // -------------- initialisations end -----------
 const RegistrationForm = () => (
@@ -56,12 +75,12 @@ const RegistrationForm = () => (
       initialValues={INITIAL_VALUES}
       validate={validateInputs}
       onSubmit={(values, { setSubmitting }) => {
-        reqCredentialData(values);
+        handleSubmit(values);
         setSubmitting(false);
       }}
     >
       {/* оборачиваем специальным компонентом  FormGroup, доьавляем компоненту Field (формика) класс бутстрапа form-control. Создаем кастомный компонент FormInput и добавляем его атрибутом в компонент Field*/}
-      {({ isSubmitting }) => (
+      {({ isSubmitting, errors }) => (
         <Form>
           <Field
             className="form-control"
@@ -89,7 +108,7 @@ const RegistrationForm = () => (
             name="password2"
             component={FormInput}
           />
-
+          {errors.name && <div id="feedback">{errors.name}</div>}
           <Button block type="submit" disabled={isSubmitting}>
             Зарегистрироваться
           </Button>

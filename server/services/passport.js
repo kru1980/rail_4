@@ -13,14 +13,14 @@ module.exports = function(passport) {
         }
         return done(null, user);
         // если юзер есть то необходимо сравнить его посоленый пароль с паролем из поля ввода
-        // bcrypt.compare(password, user.password, (err, isMatch) => {
-        //   if (err) throw err;
-        //   if (isMatch) {
-        //     return done(null, user);
-        //   } else {
-        //     return done(null, false, { message: "Пароль не правильные" });
-        //   }
-        // });
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+          if (err) throw err;
+          if (isMatch) {
+            return done(null, user);
+          } else {
+            return done(null, false, { message: "Пароль не правильные" });
+          }
+        });
       });
     })
   );
