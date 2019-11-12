@@ -30,14 +30,16 @@ const saveCredentialData = credentialsValues => {
 };
 
 // -------------- initialisations end -----------
-const LoginCreateForm = () => (
+const LoginCreateForm = ({ handleLoginCredentials }) => (
   <div>
     <h1>Форма входа</h1>
     <Formik
       initialValues={INITIAL_VALUES}
       validate={validateInputs}
       onSubmit={(values, { setSubmitting }) => {
-        saveCredentialData(values);
+        handleLoginCredentials(values);
+        console.log("оправлены логин данные");
+
         setSubmitting(false);
       }}
     >

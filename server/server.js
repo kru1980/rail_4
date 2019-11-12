@@ -23,6 +23,7 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = routes.getRequestHandler(app);
 
+// подкл базы
 mongoose
   .connect(db.mongoURI, {
     useNewUrlParser: true,
@@ -46,19 +47,21 @@ app.prepare().then(() => {
     session({
       secret: config.SESSION_SECRET,
       resave: true,
-      saveUninitialized: false,
+      saveUninitialized: true,
       store: new MongoStore({
         mongooseConnection: mongoose.connection
       }),
-      expires: new Date(Date.now() + 60 * 60 * 24 * 30)
+      expires: 180000000000000000
+      // expires: new Date(Date.now() + 60 * 60 * 24 * 30)
     })
   );
-
+  // подкл паспорта
   server.use(passport.initialize());
   server.use(passport.session());
 
   server.use("/users", require("./routes").auth); // подкл роут юзера
 
+  // хранилище секретных данных
   server.get("/v1/secret", (req, res) => {
     return res.send("ok secret rout");
   });

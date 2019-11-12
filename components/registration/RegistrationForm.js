@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 // Сперва делаем структуру формы используя формик, для ее стилизации берем компоненты бутстрап
-import { Button, FormGroup, Label } from "reactstrap";
+import { Button, FormGroup, Label, Alert } from "reactstrap";
 
 import FormInput from "./FormInput";
 
@@ -27,60 +27,28 @@ const validateInputs = values => {
   return errors;
 };
 
-const saveCredentialData = credentialsValues => {
-  setTimeout(() => {
-    alert(JSON.stringify(credentialsValues, null, 2));
-  }, 400);
-};
-
-// const reqCredentialData = credentialsValues => {
-//   axios
-//     .post("/users/registration", credentialsValues)
-//     // .post("/users/register", JSON.stringify(credentialsValues))
-//     .then(function(response) {
-//       console.log("response from server =", response);
-//       // На сервере делаем проверку есть юзер в базе или нет, создаем его
-//     })
-//     .catch(function(error) {
-//       console.log("error from server =", error);
-//       // ошибки с сервера
-//     });
-// };
-
-// const handle400Error = (backendErrors, setStatus) => {
-//   let errors = {};
-//   for (let key in backendErrors) {
-//     errors[key] = backendErrors[key][0]; // for now only take the first error of the array
-//   }
-//   console.log("errors object", errors);
-//   setStatus({ errors });
-// };
-
-// const handleSubmit = async (values, { setStatus, resetForm }) => {
-//   try {
-//     const res = axios.post("/users/registration", values);
-
-//     console.log(res.data);
-//     resetForm();
-//   } catch (e) {
-//     setStatus(transformMyApiErrors(e));
-//   }
+// const saveCredentialData = credentialsValues => {
+//   setTimeout(() => {
+//     alert(JSON.stringify(credentialsValues, null, 2));
+//   }, 400);
 // };
 
 // -------------- initialisations end -----------
-const RegistrationForm = () => (
+const RegistrationForm = props => (
   <div>
     <h1>Форма регистарции</h1>
+
     <Formik
       initialValues={INITIAL_VALUES}
       validate={validateInputs}
-      onSubmit={(values, { setSubmitting }) => {
-        handleSubmit(values);
-        setSubmitting(false);
+      onSubmit={(values, actions) => {
+        props.handleSubmit(values);
+        actions.setSubmitting(false);
+        actions.resetForm();
       }}
     >
       {/* оборачиваем специальным компонентом  FormGroup, доьавляем компоненту Field (формика) класс бутстрапа form-control. Создаем кастомный компонент FormInput и добавляем его атрибутом в компонент Field*/}
-      {({ isSubmitting, errors }) => (
+      {({ isSubmitting }) => (
         <Form>
           <Field
             className="form-control"
@@ -108,7 +76,7 @@ const RegistrationForm = () => (
             name="password2"
             component={FormInput}
           />
-          {errors.name && <div id="feedback">{errors.name}</div>}
+          {/* {errors.name && <div id="feedback">{errors.name}</div>} */}
           <Button block type="submit" disabled={isSubmitting}>
             Зарегистрироваться
           </Button>

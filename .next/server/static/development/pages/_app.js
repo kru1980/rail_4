@@ -847,11 +847,18 @@ class MyApp extends next_app__WEBPACK_IMPORTED_MODULE_3___default.a {
   //     super.componentDidCatch(error, errorInfo);
   //   }
   static async getInitialProps(appContext) {
-    // calls page's `getInitialProps` and fills `appProps.pageProps`
     const appProps = await next_app__WEBPACK_IMPORTED_MODULE_3___default.a.getInitialProps(appContext);
-    const isAuth = false;
+    console.log("=========Супер важно!! _App ==============="); // console.log("appContext.ctx.user _app ", appContext.ctx.req);
+    // const user = process.browser ? await auth0.clientAuth() : await auth0.serverAuth(ctx.req);
+    // Важно!! в любом случае чтобы  юзер появился в _арр на стороне клиента, юзера сохраняем в куках. Использовать куки и сессии неправильно?
+
+    const user = appContext.ctx.req ? appContext.ctx.req.user : undefined;
+    const auth = {
+      user,
+      isAuthenticated: !!user
+    };
     return Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_1__["default"])({}, appProps, {
-      isAuth
+      auth
     });
   }
 
@@ -859,11 +866,9 @@ class MyApp extends next_app__WEBPACK_IMPORTED_MODULE_3___default.a {
     const {
       Component,
       pageProps,
-      isAuth
+      auth
     } = this.props;
-    return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(Component, Object(_babel_runtime_corejs2_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, pageProps, {
-      isAuth: isAuth
-    }));
+    return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(Component, Object(_babel_runtime_corejs2_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, pageProps, auth));
   }
 
 }

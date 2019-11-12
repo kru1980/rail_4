@@ -4,10 +4,10 @@ import BaseLayout from "../components/layouts/BaseLayout";
 import { Container, Row, Col } from "reactstrap";
 
 const Index = props => {
-  // console.log("props render index page", props);
+  console.log("props render index page", props);
 
   return (
-    <BaseLayout className="cover" isAuth={props.isAuth}>
+    <BaseLayout className="cover">
       <div className="main-section">
         <div className="background-image">
           <img src="/static/images/background-index.png" />

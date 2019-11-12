@@ -17,16 +17,21 @@ class MyApp extends App {
   //   }
 
   static async getInitialProps(appContext) {
-    // calls page's `getInitialProps` and fills `appProps.pageProps`
     const appProps = await App.getInitialProps(appContext);
-    const isAuth = false;
-    return { ...appProps, isAuth };
+
+    console.log("=========Супер важно!! _App ===============");
+    // console.log("appContext.ctx.user _app ", appContext.ctx.req);
+    // const user = process.browser ? await auth0.clientAuth() : await auth0.serverAuth(ctx.req);
+    // Важно!! в любом случае чтобы  юзер появился в _арр на стороне клиента, юзера сохраняем в куках. Использовать куки и сессии неправильно?
+    const user = appContext.ctx.req ? appContext.ctx.req.user : undefined;
+    const auth = { user, isAuthenticated: !!user };
+    return { ...appProps, auth };
   }
 
   render() {
-    const { Component, pageProps, isAuth } = this.props;
+    const { Component, pageProps, auth } = this.props;
 
-    return <Component {...pageProps} isAuth={isAuth} />;
+    return <Component {...pageProps} {...auth} />;
   }
 }
 

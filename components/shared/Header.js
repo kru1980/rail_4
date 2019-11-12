@@ -40,7 +40,7 @@ export default class Header extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false,
-      isAuth: this.props.isAuth // данные получим через контекст из _app, там посадим слушателя
+      isAuthenticated: this.props.isAuthenticated // данные получим через контекст из _app, там посадим слушателя
     };
   }
   toggle() {
@@ -49,6 +49,7 @@ export default class Header extends React.Component {
     });
   }
   render() {
+    const { isAuthenticated } = this.state;
     return (
       <div>
         <Navbar
@@ -78,18 +79,18 @@ export default class Header extends React.Component {
               <NavItem className="port-navbar-item">
                 <BsNavLink title="Cv" route="/cv" />
               </NavItem> */}
-              {!this.state.isAuth && (
+              {!isAuthenticated && (
                 <NavItem className="port-navbar-item">
                   <BsNavLink title="Registration" route="/registration" />
                 </NavItem>
               )}
-              {!this.state.isAuth && (
+              {!isAuthenticated && (
                 <NavItem className="port-navbar-item">
                   <BsNavLink title="Login" route="/login" />
                 </NavItem>
               )}
 
-              {this.state.isAuth && (
+              {isAuthenticated && (
                 <NavItem className="port-navbar-item">
                   <Logout />
                   {/* logout это ссылка, а не компанент */}
