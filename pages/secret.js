@@ -3,11 +3,9 @@ import BaseLayout from "../components/layouts/BaseLayout";
 import BasePage from "../components/layouts/BasePage";
 import withAuth from "../components/hoc/withAuth";
 
-const Secret = props => {
-  console.log("secret page props", props);
-
+const Secret = ({ isAuthenticated }) => {
   return (
-    <BaseLayout>
+    <BaseLayout title="secret page" isAuthenticated={isAuthenticated}>
       <BasePage>secret page</BasePage>
     </BaseLayout>
   );

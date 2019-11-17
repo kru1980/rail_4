@@ -7,7 +7,8 @@ const BaseLayout = props => {
     children,
     className,
     isAuthenticated,
-    title = "This is the default title"
+    title = "This is the default title",
+    user
   } = props;
   return (
     <React.Fragment>

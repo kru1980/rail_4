@@ -5,9 +5,14 @@ import { Container, Row, Col } from "reactstrap";
 
 const Index = props => {
   console.log("props render index page", props);
-
+  const { user, isAuthenticated } = props;
   return (
-    <BaseLayout className="cover">
+    <BaseLayout
+      user={user}
+      isAuthenticated={isAuthenticated}
+      className="cover"
+      title="main page"
+    >
       <div className="main-section">
         <div className="background-image">
           <img src="/static/images/background-index.png" />

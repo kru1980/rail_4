@@ -65,6 +65,12 @@ app.prepare().then(() => {
   server.get("/v1/secret", (req, res) => {
     return res.send("ok secret rout");
   });
+  // redirect auth callback page
+  server.get("/callback", (req, res) => {
+    console.log("Вход удачен идет редирект на /");
+
+    return res.redirect("/");
+  });
 
   server.get("*", (req, res) => {
     return handle(req, res);

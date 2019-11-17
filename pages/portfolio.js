@@ -1,10 +1,13 @@
 import React from "react";
 import { useRouter } from "next/router";
 import BasePage from "../components/layouts/BasePage";
+import BaseLayout from "../components/layouts/BaseLayout";
 
-const Portfolio = ({ postId }) => {
+const Portfolio = ({ postId, isAuthenticated, user }) => {
   return (
-    <div>
+    <BaseLayout title="Blog page" isAuthenticated={isAuthenticated}>
+
+      <BasePage>
       <h3>Portfolio page</h3>
       <main>
         <br />
@@ -12,7 +15,9 @@ const Portfolio = ({ postId }) => {
         {/* client id: {idClient} */}
         <h4>null</h4>
       </main>
-    </div>
+      </BasePage>
+        </BaseLayout>
+>
   );
 };
 

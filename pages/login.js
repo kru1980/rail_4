@@ -3,6 +3,7 @@ import BaseLayout from "../components/layouts/BaseLayout";
 import BasePage from "../components/layouts/BasePage";
 import LoginCreateForm from "../components/registration/LoginCreateForm";
 import { handleErrors } from "../server/services/actions";
+import Cookies from "js-cookie";
 import axios from "axios";
 // import Router from "next/router";
 import { useRouter } from "next/router";
@@ -19,20 +20,14 @@ const Login = () => {
     axios
       .post("/users/login", credentials)
       .then(user => {
-        // если решение паспорта положительное то редирект на /
-        console.log("response new user from server =", user);
-        setTimeout(() => router.push("/"), 1000);
+        Cookies.set("user", user.data.user.email);
       })
+      .then(() => setTimeout(() => router.push("/callback"), 1000))
       .catch(async error => {
         // const err = await handleErrors(error);
         setErrorsMessages(error.message);
         setVisible(true);
-        console.log(
-          "error login from server =",
-          error.message,
-
-          error.stack
-        );
+        console.log("error login from server =", error.message, error.stack);
       });
   };
 

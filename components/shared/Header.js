@@ -1,5 +1,8 @@
 import React from "react";
 import Link from "next/link";
+import axios from "axios";
+import Cookies from "js-cookie";
+import Router from "next/router";
 
 import {
   Collapse,
@@ -23,14 +26,23 @@ const BsNavLink = ({ title, route }) => {
   );
 };
 
-// Login в моей идеи это ссылка на страницу, на которой расположена форма регистрации
-// const Login = () => {
-//   return <span className="nav-link port-navbar-link clickable">Login</span>;
-// };
+const LogOutFn = () => {
+  axios
+    .get("/users/logout")
+    .then(() => Cookies.remove("user"))
+    .then(() => Router.push("/callback"))
+    .catch(err => console.log(err));
+};
 
-// Logout спан элемент при клике на который идет событие онклик, метод приходит через контекст или через пропсы из _app компонента
 const Logout = () => {
-  return <span className="nav-link port-navbar-link clickable">Logout</span>;
+  return (
+    <span
+      className="nav-link port-navbar-link clickable"
+      onClick={() => LogOutFn()}
+    >
+      Logout
+    </span>
+  );
 };
 
 export default class Header extends React.Component {
@@ -40,7 +52,7 @@ export default class Header extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false,
-      isAuthenticated: this.props.isAuthenticated // данные получим через контекст из _app, там посадим слушателя
+      isAuthenticated: this.props.isAuthenticated // данные получим через контекст из _app
     };
   }
   toggle() {
