@@ -14,7 +14,7 @@ const MongoStore = require("connect-mongo")(session);
 const db = require("./config/db");
 const config = require("./config/config");
 
-// passport config
+// passport config подключение стратегии
 require("./services/passport")(passport);
 
 const port = parseInt(process.env.PORT, 10) || 3000;
