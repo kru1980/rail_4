@@ -18,10 +18,11 @@ const Login = () => {
   const handleLoginCredentials = credentials => {
     axios
       .post("/users/login", credentials)
-      .then(user => {
+      .then(token => {
         // если решение паспорта положительное то редирект на /
-        console.log("response new user from server =", user);
-        setTimeout(() => router.push("/"), 1000);
+        console.log("response token from server =", token);
+
+        // setTimeout(() => router.push("/"), 1000);
       })
       .catch(async error => {
         // const err = await handleErrors(error);

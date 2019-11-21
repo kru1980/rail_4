@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
 
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
@@ -7,31 +10,25 @@ const passport = require("passport");
 
 const User = require("../models/Users");
 
-// страница дщпшт будет на стороне сервера некст и с помощью аксиос будет отправлять пост запрос, а здесь сервер будет получать credentials
-// если вход удачен по идет перерендер на страницу secret, ее рендерит сервер некст
-
-// 1 вариант
-// router.post(
-//   // path="/users/login" on server
-//   "/login",
-//   passport.authenticate("local", {
-//     successRedirect: "/secret",
-//     failureRedirect: "/login",
-//     failureFlash: false
-//   })
-// );
-// 2 вариант входа
-
 router.post("/login", passport.authenticate("local"), function(req, res) {
-  // If this function gets called, authentication was successful.
-  // `req.user` contains the authenticated user.
-  // res.redirect('/users/' + req.user.username);
-  // console.log("req.sesion server user/login", req.session);
-  // console.log("req.user from server user/login", req.user);
-  // Здесь идет перенаправление на /, но чтение сервера не происходит поэтому приложение ничего не знает об успешном входе юзера.
-  //1) Сделать роут на сервере, которого нет на клиенте, роут будет делать редирект на корень /. Полученный req.user сохраняем в контексте, при запросах ничего не отправляем, только маршруты будут проверять время жизни сессии, и в случае захода на секретную страницу, на страницу мы войдем, тк юзер сохраненн в контексте, а данные не придут.
-  //2) Отказаться от сессии, выбрать паспорт + jwt. Сохранить токен в куках в момент ответа на отправку логин данных, привязать к каждому запросу и проверять время жизни токена.
-  res.json({ message: "ok ты вошел на сайт" });
+  console.log("req.user=", req.user);
+  console.log("req.session=", req.session);
+  const user = req.user;
+  const payload = {
+    id: user._id,
+    displayName: user.name,
+    email: user.email
+  };
+  const token = jwt.sign(payload, "jwtsecret");
+
+  // jwt.sign(payload, "jwtsecret", { algorithm: "RS256" }, function(err, token) {
+  //   if (err) {
+  //     res.status(403);
+  //   }
+  //   console.log("token=", token);
+  //   res.json({ message: "ok", token });
+  // });
+  res.json({ message: "ok", token });
 });
 
 // роут регистрации

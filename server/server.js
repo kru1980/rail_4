@@ -6,6 +6,8 @@ const routes = require("../routes"); // next routes
 const bodyParser = require("body-parser");
 
 const passport = require("passport");
+// const JwtStrategy = require("passport-jwt").Strategy;
+// const ExtractJwt = require("passport-jwt").ExtractJwt;
 
 const session = require("express-session");
 const mongoose = require("mongoose");
@@ -16,6 +18,8 @@ const config = require("./config/config");
 
 // passport config подключение стратегии
 require("./services/passport")(passport);
+require("./services/passportJ")(passport);
+// require("./services/passportJwt")(passportJwt);
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 
@@ -35,6 +39,7 @@ mongoose
   .catch(err => console.log(err));
 
 mongoose.Promise = global.Promise;
+// mongoose.set("debug", true);
 
 // server next
 app.prepare().then(() => {
