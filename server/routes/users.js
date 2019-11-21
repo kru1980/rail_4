@@ -1,34 +1,37 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const JwtStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
 
 const bcrypt = require("bcryptjs");
-const mongoose = require("mongoose");
-const passport = require("passport");
 
 const User = require("../models/Users");
 
-router.post("/login", passport.authenticate("local"), function(req, res) {
-  console.log("req.user=", req.user);
-  console.log("req.session=", req.session);
-  const user = req.user;
-  const payload = {
-    id: user._id,
-    displayName: user.name,
-    email: user.email
-  };
-  const token = jwt.sign(payload, "jwtsecret");
+router.post("/login", function(req, res) {
+  const { email, password } = req.body;
+  console.log("req.body=", req.body);
 
-  // jwt.sign(payload, "jwtsecret", { algorithm: "RS256" }, function(err, token) {
-  //   if (err) {
-  //     res.status(403);
-  //   }
-  //   console.log("token=", token);
-  //   res.json({ message: "ok", token });
-  // });
-  res.json({ message: "ok", token });
+  User.findOne({ email: email })
+    .then(user => {
+      if (!user) {
+        // обработать ошибку, а то херню пишет
+        TODO: res.status(401).json({ message: "юзер не найден в базе" });
+      }
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) throw err;
+        if (isMatch) {
+          const payload = {
+            id: user._id,
+            displayName: user.name,
+            email: user.email
+          };
+          const token = jwt.sign(payload, "jwtsecret");
+          res.json({ message: "credentials =true, высылаю токен", token });
+        } else {
+          res.json({ message: "Пароль не правильные" });
+        }
+      });
+    })
+    .catch(err => console.log(err));
 });
 
 // роут регистрации

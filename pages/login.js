@@ -8,6 +8,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { Container, Row, Col, Alert } from "reactstrap";
 
+import Cookies from "js-cookie";
+
 const Login = () => {
   const [errorsMessages, setErrorsMessages] = useState(undefined);
   const [visible, setVisible] = useState(false);
@@ -18,11 +20,18 @@ const Login = () => {
   const handleLoginCredentials = credentials => {
     axios
       .post("/users/login", credentials)
-      .then(token => {
+      .then(({ data }) => {
         // если решение паспорта положительное то редирект на /
-        console.log("response token from server =", token);
+        console.log("response token from server =", data);
+        Cookies.set("jwt", data.token);
+        localStorage.setItem("token", data.token);
+        console.log("localstorage");
 
         // setTimeout(() => router.push("/"), 1000);
+      })
+      .then(() => {
+        console.log(localStorage.getItem("token"));
+        console.log(Cookies.get("jwt"));
       })
       .catch(async error => {
         // const err = await handleErrors(error);

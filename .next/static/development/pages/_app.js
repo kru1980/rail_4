@@ -8833,8 +8833,8 @@ function (_App) {
 
               case 2:
                 appProps = _context.sent;
-                console.log("=========Супер важно!! _App ==============="); // console.log("appContext.ctx.user _app ", appContext.ctx.req);
-                // const user = process.browser ? await auth0.clientAuth() : await auth0.serverAuth(ctx.req);
+                console.log("=========Супер важно!! _App ===============");
+                console.log("appContext.ctx.req ищем куки ", appContext.ctx.req.headers); // const user = process.browser ? await auth0.clientAuth() : await auth0.serverAuth(ctx.req);
                 // Важно!! в любом случае чтобы  юзер появился в _арр на стороне клиента, юзера сохраняем в куках. Использовать куки и сессии неправильно?
 
                 user = appContext.ctx.req ? appContext.ctx.req.user : undefined;
@@ -8846,7 +8846,7 @@ function (_App) {
                   auth: auth
                 }));
 
-              case 7:
+              case 8:
               case "end":
                 return _context.stop();
             }

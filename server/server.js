@@ -1,23 +1,20 @@
 const express = require("express");
 const next = require("next");
-
 const routes = require("../routes"); // next routes
-
 const bodyParser = require("body-parser");
-
-const passport = require("passport");
-// const JwtStrategy = require("passport-jwt").Strategy;
-// const ExtractJwt = require("passport-jwt").ExtractJwt;
-
-const session = require("express-session");
 const mongoose = require("mongoose");
-const MongoStore = require("connect-mongo")(session);
-
 const db = require("./config/db");
 const config = require("./config/config");
 
+// const MongoStore = require("connect-mongo")(session);
+// const session = require("express-session");
+// 1 подкл паспорт
+const passport = require("passport");
+
 // passport config подключение стратегии
-require("./services/passport")(passport);
+// require("./services/passport")(passport);
+
+// 2 подкл стратегию паспорт
 require("./services/passportJ")(passport);
 // require("./services/passportJwt")(passportJwt);
 
@@ -48,21 +45,21 @@ app.prepare().then(() => {
   server.use(bodyParser.json());
 
   // session
-  server.use(
-    session({
-      secret: config.SESSION_SECRET,
-      resave: true,
-      saveUninitialized: true,
-      store: new MongoStore({
-        mongooseConnection: mongoose.connection
-      }),
-      expires: 180000000000000000
-      // expires: new Date(Date.now() + 60 * 60 * 24 * 30)
-    })
-  );
-  // подкл паспорта
+  // server.use(
+  //   session({
+  //     secret: config.SESSION_SECRET,
+  //     resave: true,
+  //     saveUninitialized: true,
+  //     store: new MongoStore({
+  //       mongooseConnection: mongoose.connection
+  //     }),
+  //     expires: 180000000000000000
+  //     // expires: new Date(Date.now() + 60 * 60 * 24 * 30)
+  //   })
+  // );
+  // 3 инициализировали паспорт
   server.use(passport.initialize());
-  server.use(passport.session());
+  // server.use(passport.session());
 
   server.use("/users", require("./routes").auth); // подкл роут юзера
 
@@ -70,6 +67,22 @@ app.prepare().then(() => {
   server.get("/v1/secret", (req, res) => {
     return res.send("ok secret rout");
   });
+
+  var cookieExtractor = function(req) {
+    var token = null;
+    if (req && req.cookies) {
+      token = req.cookies["jwt"];
+    }
+    return token;
+  };
+
+  server.get(
+    "/secret",
+    passport.authenticate("jwt", { session: false }),
+    function(req, res) {
+      res.json("Success! You can not see this without a token");
+    }
+  );
 
   server.get("*", (req, res) => {
     return handle(req, res);
