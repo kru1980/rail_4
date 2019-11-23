@@ -5,7 +5,7 @@ import fetch from "isomorphic-unfetch";
 import BaseLayout from "../components/layouts/BaseLayout";
 import BasePage from "../components/layouts/BasePage";
 
-const Portfolios = ({ shows }) => {
+const Portfolios = ({ shows, isAuthenticated }) => {
   const list = shows =>
     shows.map(show => (
       <li key={show.id}>
@@ -16,7 +16,7 @@ const Portfolios = ({ shows }) => {
     ));
 
   return (
-    <BaseLayout>
+    <BaseLayout title="Portfolios page" isAuthenticated={isAuthenticated}>
       <BasePage>
         <h3>Page Batman </h3>
         <h4>List shows:</h4>

@@ -5,9 +5,15 @@ import { Container, Row, Col } from "reactstrap";
 
 const Index = props => {
   console.log("props render index page", props);
-
+  const { user, isAuthenticated } = props;
   return (
-    <BaseLayout className="cover">
+    <BaseLayout
+      className="cover"
+      user={user}
+      isAuthenticated={isAuthenticated}
+      className="cover"
+      title="main page"
+    >
       <div className="main-section">
         <div className="background-image">
           <img src="/static/images/background-index.png" />
@@ -35,6 +41,9 @@ const Index = props => {
             </Col>
             <Col md="6" className="hero-welcome-wrapper">
               <div className="hero-welcome-text">
+                {user && user.displayName ? (
+                  <h1>Привет: {user.displayName}</h1>
+                ) : null}
                 <h1>
                   Welcome to the portfolio website of Filip Jerga. Get informed,
                   collaborate and discover projects I was working on through the

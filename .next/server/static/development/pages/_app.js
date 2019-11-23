@@ -824,35 +824,53 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var next_app__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! next/app */ "./node_modules/next/app.js");
 /* harmony import */ var next_app__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_app__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ "./node_modules/bootstrap/dist/css/bootstrap.min.css");
-/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _style_main_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../style/main.scss */ "./style/main.scss");
-/* harmony import */ var _style_main_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_style_main_scss__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! js-cookie */ "js-cookie");
+/* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.min.css */ "./node_modules/bootstrap/dist/css/bootstrap.min.css");
+/* harmony import */ var bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_min_css__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _style_main_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../style/main.scss */ "./style/main.scss");
+/* harmony import */ var _style_main_scss__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_style_main_scss__WEBPACK_IMPORTED_MODULE_6__);
 
 
 
+
+
+
+const jwtDecode = __webpack_require__(/*! jwt-decode */ "jwt-decode");
 
 
 
 
 class MyApp extends next_app__WEBPACK_IMPORTED_MODULE_3___default.a {
-  // Only uncomment this method if you have blocking data requirements for
-  // every single page in your application. This disables the ability to
-  // perform automatic static optimization, causing every page in your app to
-  // be server-side rendered.
-  //
-  //   componentDidCatch(error, errorInfo) {
-  //     console.log("CUSTOM ERROR HANDLING", error);
-  //     // This is needed to render errors correctly in development / production
-  //     super.componentDidCatch(error, errorInfo);
-  //   }
   static async getInitialProps(appContext) {
     const appProps = await next_app__WEBPACK_IMPORTED_MODULE_3___default.a.getInitialProps(appContext);
     console.log("=========Супер важно!! _App ===============");
-    console.log("appContext.ctx.req ищем куки ", appContext.ctx.req.headers); // const user = process.browser ? await auth0.clientAuth() : await auth0.serverAuth(ctx.req);
-    // Важно!! в любом случае чтобы  юзер появился в _арр на стороне клиента, юзера сохраняем в куках. Использовать куки и сессии неправильно?
 
-    const user = appContext.ctx.req ? appContext.ctx.req.user : undefined;
+    const checkCookie = async () => {
+      const token = await js_cookie__WEBPACK_IMPORTED_MODULE_4___default.a.get("jwt");
+      if (!token) return undefined;
+
+      try {
+        return await jwtDecode(token);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const checkCookieFromServer = async req => {
+      try {
+        const cookie = await req.headers.cookie;
+        const token = cookie ? cookie.split("=")[1] : "";
+        const decodedToken = token ? jwtDecode(token) : undefined;
+        return decodedToken;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const user =  false ? undefined : await checkCookieFromServer(appContext.ctx.req); // await checkCookieFromServer(appContext.ctx.req);
+
+    console.log("user _app=", user);
     const auth = {
       user,
       isAuthenticated: !!user
@@ -963,6 +981,28 @@ module.exports = require("core-js/library/fn/object/keys");
 /***/ (function(module, exports) {
 
 module.exports = require("core-js/library/fn/promise");
+
+/***/ }),
+
+/***/ "js-cookie":
+/*!****************************!*\
+  !*** external "js-cookie" ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("js-cookie");
+
+/***/ }),
+
+/***/ "jwt-decode":
+/*!*****************************!*\
+  !*** external "jwt-decode" ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("jwt-decode");
 
 /***/ }),
 

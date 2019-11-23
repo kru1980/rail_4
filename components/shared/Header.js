@@ -1,5 +1,8 @@
 import React from "react";
 import Link from "next/link";
+import axios from "axios";
+import Cookies from "js-cookie";
+import Router from "next/router";
 
 import {
   Collapse,
@@ -7,12 +10,7 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
+  NavItem
 } from "reactstrap";
 
 const BsNavLink = ({ title, route }) => {
@@ -23,14 +21,24 @@ const BsNavLink = ({ title, route }) => {
   );
 };
 
-// Login в моей идеи это ссылка на страницу, на которой расположена форма регистрации
-// const Login = () => {
-//   return <span className="nav-link port-navbar-link clickable">Login</span>;
-// };
+const LogOutFn = () => {
+  //Ебучие рога, если делаем логоут с главной страницы header приложения не обновляется
+  TODO: axios
+    .get("/users/logout")
+    .then(() => Cookies.remove("jwt"))
+    .then(() => Router.push("/login"))
+    .catch(err => console.log(err));
+};
 
-// Logout спан элемент при клике на который идет событие онклик, метод приходит через контекст или через пропсы из _app компонента
 const Logout = () => {
-  return <span className="nav-link port-navbar-link clickable">Logout</span>;
+  return (
+    <span
+      className="nav-link port-navbar-link clickable"
+      onClick={() => LogOutFn()}
+    >
+      Logout
+    </span>
+  );
 };
 
 export default class Header extends React.Component {
@@ -45,7 +53,8 @@ export default class Header extends React.Component {
   }
   toggle() {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
+      isAuthenticated: this.props.isAuthenticated
     });
   }
   render() {

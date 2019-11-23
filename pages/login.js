@@ -4,7 +4,6 @@ import BasePage from "../components/layouts/BasePage";
 import LoginCreateForm from "../components/registration/LoginCreateForm";
 import { handleErrors } from "../server/services/actions";
 import axios from "axios";
-// import Router from "next/router";
 import { useRouter } from "next/router";
 import { Container, Row, Col, Alert } from "reactstrap";
 
@@ -21,20 +20,15 @@ const Login = () => {
     axios
       .post("/users/login", credentials)
       .then(({ data }) => {
-        // если решение паспорта положительное то редирект на /
-        console.log("response token from server =", data);
+        // console.log("response token from server =", data);
         Cookies.set("jwt", data.token);
-        localStorage.setItem("token", data.token);
-        console.log("localstorage");
 
-        // setTimeout(() => router.push("/"), 1000);
+        setTimeout(() => router.push("/"), 1000);
       })
       .then(() => {
-        console.log(localStorage.getItem("token"));
-        console.log(Cookies.get("jwt"));
+        // console.log(Cookies.get("jwt"));
       })
       .catch(async error => {
-        // const err = await handleErrors(error);
         setErrorsMessages(error.message);
         setVisible(true);
         console.log(

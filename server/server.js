@@ -61,6 +61,20 @@ app.prepare().then(() => {
   server.use(passport.initialize());
   // server.use(passport.session());
 
+  server.get(
+    "/secretDebug",
+    function(req, res, next) {
+      // console.log(req.get("Authorization"));
+      console.log("req.cookies", req.cookies);
+      console.log("req.headers.cookies", req.headers.cookies);
+
+      next();
+    },
+    function(req, res) {
+      res.json("debugging");
+    }
+  );
+
   server.use("/users", require("./routes").auth); // подкл роут юзера
 
   // хранилище секретных данных
@@ -80,6 +94,8 @@ app.prepare().then(() => {
     "/secret",
     passport.authenticate("jwt", { session: false }),
     function(req, res) {
+      console.log("/secret route", req.headers.cookies);
+
       res.json("Success! You can not see this without a token");
     }
   );

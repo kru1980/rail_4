@@ -6,6 +6,13 @@ const bcrypt = require("bcryptjs");
 
 const User = require("../models/Users");
 
+router.get("/logout", function(req, res) {
+  console.log(" сущ или нет req.logout() =", typeof req.logout());
+
+  req.logout(); // убивает req.user которого не было и ф-ю Authenticated
+  res.json({ message: "ok ты вышел" });
+});
+
 router.post("/login", function(req, res) {
   const { email, password } = req.body;
   console.log("req.body=", req.body);
