@@ -61,4 +61,10 @@ const Index = props => {
   );
 };
 
+Index.getInitialProps = async ({ req }) => {
+  console.log("Index page =======================");
+  // console.log("Index req=", req);
+
+  return {};
+};
 export default Index;

@@ -6,11 +6,11 @@ import BasePage from "../layouts/BasePage";
 export default function(Component) {
   return class withAuth extends React.Component {
     renderProtectedPage() {
-      const { isAuth } = this.props;
+      const { user, isAuthenticated } = this.props;
 
-      if (!isAuth) {
+      if (!isAuthenticated) {
         return (
-          <BaseLayout {...this.props.isAuth}>
+          <BaseLayout {...this.props.isAuthenticated}>
             <BasePage>
               <h1>
                 {" "}
@@ -20,7 +20,7 @@ export default function(Component) {
           </BaseLayout>
         );
       } else {
-        return <Component {...this.props} />;
+        return <Component {...this.props} {...user} {...isAuthenticated} />;
       }
     }
 

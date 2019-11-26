@@ -22,7 +22,7 @@
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/login": [
+    "/secret": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

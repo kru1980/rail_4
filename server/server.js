@@ -44,36 +44,13 @@ app.prepare().then(() => {
   server.use(bodyParser.urlencoded({ extended: false })); // тк через  axios то false
   server.use(bodyParser.json());
 
-  // session
-  // server.use(
-  //   session({
-  //     secret: config.SESSION_SECRET,
-  //     resave: true,
-  //     saveUninitialized: true,
-  //     store: new MongoStore({
-  //       mongooseConnection: mongoose.connection
-  //     }),
-  //     expires: 180000000000000000
-  //     // expires: new Date(Date.now() + 60 * 60 * 24 * 30)
-  //   })
-  // );
-  // 3 инициализировали паспорт
   server.use(passport.initialize());
   // server.use(passport.session());
 
-  server.get(
-    "/secretDebug",
-    function(req, res, next) {
-      // console.log(req.get("Authorization"));
-      console.log("req.cookies", req.cookies);
-      console.log("req.headers.cookies", req.headers.cookies);
-
-      next();
-    },
-    function(req, res) {
-      res.json("debugging");
-    }
-  );
+  server.use(function(req, res, next) {
+    console.log("req.headers.cookies", req.headers.cookie);
+    next();
+  });
 
   server.use("/users", require("./routes").auth); // подкл роут юзера
 
@@ -82,21 +59,13 @@ app.prepare().then(() => {
     return res.send("ok secret rout");
   });
 
-  var cookieExtractor = function(req) {
-    var token = null;
-    if (req && req.cookies) {
-      token = req.cookies["jwt"];
-    }
-    return token;
-  };
-
   server.get(
-    "/secret",
+    "/secret1",
     passport.authenticate("jwt", { session: false }),
     function(req, res) {
-      console.log("/secret route", req.headers.cookies);
+      console.log("/secret route должен паспорт добавить", req.user);
 
-      res.json("Success! You can not see this without a token");
+      res.json("ok");
     }
   );
 

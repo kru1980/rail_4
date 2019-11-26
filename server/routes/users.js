@@ -31,7 +31,11 @@ router.post("/login", function(req, res) {
             displayName: user.name,
             email: user.email
           };
-          const token = jwt.sign(payload, "jwtsecret");
+          const token = jwt.sign(
+            payload,
+
+            "jwtsecret"
+          );
           res.json({ message: "credentials =true, высылаю токен", token });
         } else {
           res.json({ message: "Пароль не правильные" });
