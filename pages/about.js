@@ -2,6 +2,8 @@ import React from "react";
 import BaseLayout from "../components/layouts/BaseLayout";
 import BasePage from "../components/layouts/BasePage";
 import { Button } from "reactstrap";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const About = ({ isAuthenticated }) => {
   return (
@@ -17,13 +19,24 @@ const About = ({ isAuthenticated }) => {
 };
 
 About.getInitialProps = async ({ req }) => {
-  // const user = req && req.session ? req.session.decodedToken : null;
-  // const session = (await req.session) || null;
-  console.log("about =======================");
-  console.log("about req.sesion=", req);
-  // console.log("about req.passport=", req.passport || null);
-  // console.log("about req.user=", req.user || null);
-  // console.log("about req=", req);
+  console.log("About page =======================");
+  const token = Cookies.get("jwt");
+  console.log("cookie token", token);
+  // const setAuthHeader = () => {
+  //   const token = Cookies.get("jwt");
+
+  //   if (token) {
+  //     return { headers: { authorization: `Bearer ${token}` } };
+  //   }
+
+  //   return undefined;
+  // };
+
+  // const res = await axios.get("/v1/secret", {
+  //   headers: { Authorization: `Bearer ${token}` }
+  // });
+
+  // console.log(res);
 
   return {};
 };

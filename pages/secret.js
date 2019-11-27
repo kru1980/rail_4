@@ -18,16 +18,19 @@ const Secret = ({ user, isAuthenticated }) => {
 
 Secret.getInitialProps = async ({ req }) => {
   console.log("Secret page =======================");
-  const instance = axios.create({
-    baseURL: "https://some-domain.com/api/",
-    timeout: 1000,
-    headers: { "X-Custom-Header": "foobar" }
-  });
-  instance.defaults.headers.common["Authorization"] = "Bearer 123654";
 
-  const res = await axios.get("/v1/secret", {});
+  //   const token = "1233";
+
+  //   axios
+  //     .get("/secret1", {
+  //       headers: {
+  //         Authorization: "Bearer " + token
+  //       }
+  //     })
+  //     .then(res => console.log(res.data))
+  //     .catch(err => console.log(err));
+  // };
 
   return {};
 };
-
 export default withAuth(Secret);

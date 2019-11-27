@@ -25,8 +25,8 @@ const Login = () => {
 
         setTimeout(() => router.push("/"), 1000);
       })
-      .then(() => {
-        // console.log(Cookies.get("jwt"));
+      .then(token => {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       })
       .catch(async error => {
         setErrorsMessages(error.message);

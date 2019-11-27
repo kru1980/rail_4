@@ -55,17 +55,29 @@ app.prepare().then(() => {
   server.use("/users", require("./routes").auth); // подкл роут юзера
 
   // хранилище секретных данных
-  server.get("/v1/secret", (req, res) => {
-    return res.send("ok secret rout");
-  });
+  server.get(
+    "/v1/secret",
+    passport.authenticate("jwt", { session: false }),
+    (req, res) => {
+      const data = { title: "secret1", descriptions: "Привет пупсик" };
+      return res.status(200).json({
+        message: "серкретные данные переданы",
+        data
+      });
+    }
+  );
 
   server.get(
     "/secret1",
     passport.authenticate("jwt", { session: false }),
     function(req, res) {
-      console.log("/secret route должен паспорт добавить", req.user);
+      const data = { title: "secret1", descriptions: "Привет пупсик" };
+      console.log("/secret route должен паспорт добавить");
 
-      res.json("ok");
+      return res.status(200).json({
+        message: "серкретные данные переданы",
+        data
+      });
     }
   );
 
